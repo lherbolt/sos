@@ -581,12 +581,8 @@ class SoSReport(SoSComponent):
             if _ndevs['status'] == 0:
                 for dev in _ndevs['output'].splitlines()[1:]:
                     dname, dtype = dev.split()
-                    if dtype not in _devs:
-                        _devs[dtype] = [dname]
-                    else:
-                        _devs[dtype].append(dname)
-                    _devs['ethernet'].append(dname)
-            _devs['ethernet'] = list(set(_devs['ethernet']))
+            _devs.setdefault(dtype, [])
+            _devs[dtype].append(dname)
         except Exception as err:
             self.soslog.debug("Could not parse nmcli devices: %s" % err)
         return _devs
